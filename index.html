@@ -1,271 +1,308 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>The ANTS 합주실 예약</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700&display=swap" rel="stylesheet">
-    <style>
-        body {
-            font-family: 'Noto Sans KR', sans-serif;
-            -webkit-tap-highlight-color: transparent;
-        }
-        ::-webkit-scrollbar {
-            width: 8px;
-        }
-        ::-webkit-scrollbar-track {
-            background: #111827;
-        }
-        ::-webkit-scrollbar-thumb {
-            background: #374151;
-            border-radius: 10px;
-        }
-        ::-webkit-scrollbar-thumb:hover {
-            background: #4b5563;
-        }
-        @keyframes spin {
-            to { transform: rotate(360deg); }
-        }
-        .animate-spin {
-            animation: spin 1s linear infinite;
-        }
-        button:active {
-            transform: scale(0.98);
-        }
-        .notification {
-            position: fixed;
-            top: 20px;
-            right: 20px;
-            z-index: 1000;
-            padding: 16px;
-            border-radius: 8px;
-            color: white;
-            font-weight: 500;
-            opacity: 0;
-            transform: translateX(100%);
-            transition: all 0.3s ease;
-        }
-        .notification.show {
-            opacity: 1;
-            transform: translateX(0);
-        }
-        .notification.success {
-            background-color: #10b981;
-        }
-        .notification.error {
-            background-color: #ef4444;
-        }
-    </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The ANTS 합주실 예약</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Noto Sans KR', sans-serif;
+            -webkit-tap-highlight-color: transparent;
+        }
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #111827;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #374151;
+            border-radius: 10px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #4b5563;
+        }
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+        .animate-spin {
+            animation: spin 1s linear infinite;
+        }
+        button:active {
+            transform: scale(0.98);
+        }
+        .notification {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 1000;
+            padding: 16px;
+            border-radius: 8px;
+            color: white;
+            font-weight: 500;
+            opacity: 0;
+            transform: translateX(100%);
+            transition: all 0.3s ease;
+        }
+        .notification.show {
+            opacity: 1;
+            transform: translateX(0);
+        }
+        .notification.success {
+            background-color: #10b981;
+        }
+        .notification.error {
+            background-color: #ef4444;
+        }
+    </style>
 </head>
 <body class="bg-gray-900 text-white antialiased">
 
-    <div id="app" class="container mx-auto max-w-4xl p-4 sm:p-6 min-h-screen flex flex-col">
-        
-        <header class="text-center mb-8">
-            <h1 class="text-4xl sm:text-5xl font-bold text-cyan-400 tracking-tight">The ANTS</h1>
-            <p class="text-xl sm:text-2xl text-gray-300 mt-2">합주실 예약 시스템</p>
-        </header>
+    <div id="app" class="container mx-auto max-w-4xl p-4 sm:p-6 min-h-screen flex flex-col">
+        
+        <header class="text-center mb-8">
+            <h1 class="text-4xl sm:text-5xl font-bold text-cyan-400 tracking-tight">The ANTS</h1>
+            <p class="text-xl sm:text-2xl text-gray-300 mt-2">합주실 예약 시스템</p>
+        </header>
 
-        <main class="bg-gray-800 rounded-2xl shadow-2xl p-6 sm:p-8 flex-grow">
-            <section id="date-selection" class="mb-8">
-                <h2 class="text-2xl font-semibold mb-4 text-cyan-300 border-b border-gray-700 pb-2">1. 날짜 선택</h2>
-                <div id="date-picker" class="grid grid-cols-4 sm:grid-cols-7 gap-2 sm:gap-3">
-                    </div>
-            </section>
+        <main class="bg-gray-800 rounded-2xl shadow-2xl p-6 sm:p-8 flex-grow">
+            <section id="date-selection" class="mb-8">
+                <h2 class="text-2xl font-semibold mb-4 text-cyan-300 border-b border-gray-700 pb-2">1. 날짜 선택</h2>
+                <div id="date-picker" class="grid grid-cols-4 sm:grid-cols-7 gap-2 sm:gap-3">
+                    </div>
+            </section>
 
-            <section id="time-selection" class="mb-8">
-                <h2 class="text-2xl font-semibold mb-4 text-cyan-300 border-b border-gray-700 pb-2">2. 시간 선택</h2>
-                <p id="selected-date-display" class="mb-4 text-gray-400">날짜를 선택해주세요.</p>
-                <div id="time-slots" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3 sm:gap-4">
-                    </div>
-            </section>
+            <section id="time-selection" class="mb-8">
+                <h2 class="text-2xl font-semibold mb-4 text-cyan-300 border-b border-gray-700 pb-2">2. 시간 선택</h2>
+                <p id="selected-date-display" class="mb-4 text-gray-400">날짜를 선택해주세요.</p>
+                <div id="time-slots" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3 sm:gap-4">
+                    </div>
+            </section>
 
-            <section id="booking-confirmation">
-                <h2 class="text-2xl font-semibold mb-4 text-cyan-300 border-b border-gray-700 pb-2">3. 예약 확정</h2>
-                <div id="booking-form" class="hidden bg-gray-700/50 p-6 rounded-lg">
-                    <p class="mb-4 text-lg">
-                        <span id="form-date" class="font-bold text-cyan-400"></span> / 
-                        <span id="form-time" class="font-bold text-cyan-400"></span>
-                    </p>
-                    <div class="mb-4">
-                        <label for="userName" class="block text-sm font-medium text-gray-300 mb-1">예약자 이름</label>
-                        <input type="text" id="userName" class="w-full bg-gray-800 border border-gray-600 rounded-md px-3 py-2 text-white focus:ring-2 focus:ring-cyan-500 focus:border-cyan-500 transition" placeholder="이름을 입력하세요">
-                    </div>
-                    <button id="submit-booking" class="w-full bg-cyan-600 hover:bg-cyan-700 text-white font-bold py-3 px-4 rounded-lg transition duration-300 shadow-lg disabled:bg-gray-500 disabled:cursor-not-allowed">
-                        예약하기
-                    </button>
-                </div>
-                <div id="cancel-form" class="hidden bg-gray-700/50 p-6 rounded-lg">
-                     <p id="cancel-info" class="mb-4 font-bold text-lg text-center"></p>
-                    <button id="cancel-booking" class="w-full bg-red-600 hover:bg-red-700 text-white font-bold py-3 px-4 rounded-lg transition duration-300 shadow-lg disabled:bg-gray-500 disabled:cursor-not-allowed">
-                        예약 취소
-                    </button>
-                </div>
-                <div id="info-message" class="text-center text-gray-400 p-6">
-                    예약할 시간대를 선택해주세요.
-                 </div>
-            </section>
-        </main>
-        
-        <footer class="text-center mt-8 text-gray-500 text-sm pb-4">
-            <p>현재 사용자 ID: <span id="user-id-display" class="font-mono">로딩 중...</span></p>
-            <p class="mt-2">The ANTS Band Room Booker</p>
-        </footer>
-    </div>
-    
-    <div id="loading-spinner" class="fixed inset-0 bg-gray-900 bg-opacity-80 flex items-center justify-center z-50 transition-opacity duration-300">
-        <div class="w-16 h-16 border-4 border-cyan-400 border-t-transparent rounded-full animate-spin"></div>
-    </div>
+            <section id="booking-confirmation">
+                <h2 class="text-2xl font-semibold mb-4 text-cyan-300 border-b border-gray-700 pb-2">3. 예약 확정</h2>
+                <div id="booking-form" class="hidden bg-gray-700/50 p-6 rounded-lg">
+                    <p class="mb-4 text-lg">
+                        <span id="form-date" class="font-bold text-cyan-400"></span> / 
+                        <span id="form-time" class="font-bold text-cyan-400"></span>
+                    </p>
+                    <div class="mb-4">
+                        <label for="userName" class="block text-sm font-medium text-gray-300 mb-1">예약자 이름</label>
+                        <input type="text" id="userName" class="w-full bg-gray-800 border border-gray-600 rounded-md px-3 py-2 text-white focus:ring-2 focus:ring-cyan-500 focus:border-cyan-500 transition" placeholder="이름을 입력하세요">
+                    </div>
+                    <button id="submit-booking" class="w-full bg-cyan-600 hover:bg-cyan-700 text-white font-bold py-3 px-4 rounded-lg transition duration-300 shadow-lg disabled:bg-gray-500 disabled:cursor-not-allowed">
+                        예약하기
+                    </button>
+                </div>
+                <div id="cancel-form" class="hidden bg-gray-700/50 p-6 rounded-lg">
+                     <p id="cancel-info" class="mb-4 font-bold text-lg text-center"></p>
+                    <button id="cancel-booking" class="w-full bg-red-600 hover:bg-red-700 text-white font-bold py-3 px-4 rounded-lg transition duration-300 shadow-lg disabled:bg-gray-500 disabled:cursor-not-allowed">
+                        예약 취소
+                    </button>
+                </div>
+                <div id="info-message" class="text-center text-gray-400 p-6">
+                    예약할 시간대를 선택해주세요.
+                 </div>
+            </section>
+        </main>
+        
+        <footer class="text-center mt-8 text-gray-500 text-sm pb-4">
+            <p>현재 사용자 ID: <span id="user-id-display" class="font-mono">로딩 중...</span></p>
+            <p class="mt-2">The ANTS Band Room Booker</p>
+        </footer>
+    </div>
+    
+    <div id="loading-spinner" class="fixed inset-0 bg-gray-900 bg-opacity-80 flex items-center justify-center z-50 transition-opacity duration-300">
+        <div class="w-16 h-16 border-4 border-cyan-400 border-t-transparent rounded-full animate-spin"></div>
+    </div>
 
-    <div id="custom-confirm" class="hidden fixed inset-0 bg-black bg-opacity-60 items-center justify-center z-50 p-4">
-        <div class="bg-gray-800 rounded-lg shadow-xl p-6 w-full max-w-sm">
-            <p id="confirm-message" class="text-lg text-center mb-6"></p>
-            <div class="flex justify-center gap-4">
-                <button id="confirm-cancel" class="px-6 py-2 rounded-md bg-gray-600 hover:bg-gray-500 transition">취소</button>
-                <button id="confirm-ok" class="px-6 py-2 rounded-md bg-red-600 hover:bg-red-700 transition">확인</button>
-            </div>
-        </div>
-    </div>
+    <div id="custom-confirm" class="hidden fixed inset-0 bg-black bg-opacity-60 items-center justify-center z-50 p-4">
+        <div class="bg-gray-800 rounded-lg shadow-xl p-6 w-full max-w-sm">
+            <p id="confirm-message" class="text-lg text-center mb-6"></p>
+            <div class="flex justify-center gap-4">
+                <button id="confirm-cancel" class="px-6 py-2 rounded-md bg-gray-600 hover:bg-gray-500 transition">취소</button>
+                <button id="confirm-ok" class="px-6 py-2 rounded-md bg-red-600 hover:bg-red-700 transition">확인</button>
+            </div>
+        </div>
+    </div>
 
-    <div id="notification" class="notification"></div>
-    
-    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
+    <div id="notification" class="notification"></div>
+    
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
 
-    <script>
-        // [확인] 본인의 firebaseConfig 코드가 잘 적용되었습니다.
-        const firebaseConfig = {
-            apiKey: "AIzaSyCiCdJy14RsYacUmLdOAUiBqa6X83SITnY",
-            authDomain: "theants-71249.firebaseapp.com",
-            projectId: "theants-71249",
-            storageBucket: "theants-71249.firebasestorage.app",
-            messagingSenderId: "253426577006",
-            appId: "1:253426577006:web:2006775a54694c45c9807f",
-            measurementId: "G-4EW0YRQ6PZ"
-        };
-        
-        // [추가] Firebase 앱 초기화 및 Firestore DB 연결
-        firebase.initializeApp(firebaseConfig);
-        const db = firebase.firestore();
-        const reservationsCol = db.collection('reservations');
+    <script>
+        // [확인] 본인의 firebaseConfig 코드가 잘 적용되었습니다.
+        const firebaseConfig = {
+            apiKey: "AIzaSyCiCdJy14RsYacUmLdOAUiBqa6X83SITnY",
+            authDomain: "theants-71249.firebaseapp.com",
+            projectId: "theants-71249",
+            storageBucket: "theants-71249.firebasestorage.app",
+            messagingSenderId: "253426577006",
+            appId: "1:253426577006:web:2006775a54694c45c9807f",
+            measurementId: "G-4EW0YRQ6PZ"
+        };
+        
+        // [추가] Firebase 앱 초기화 및 Firestore DB 연결
+        firebase.initializeApp(firebaseConfig);
+        const db = firebase.firestore();
+        const reservationsCol = db.collection('reservations');
 
-        // [확인] 최종적으로 수정한 시간대가 적용되었습니다.
-        const config = {
-            availableHours: [12, 18, 19, 20],
-            visibleDays: 14,
-        };
+        // [확인] 최종적으로 수정한 시간대가 적용되었습니다.
+        const config = {
+            availableHours: [12, 18, 19, 20],
+            visibleDays: 14,
+        };
 
-        const state = {
-            userId: null,
-            selectedDate: null,
-            selectedTime: null,
-            reservations: new Map(),
-            isBooking: false,
-            unsubscribe: null, 
-        };
+function getLocalDateString(date) {
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, '0');
+    const day = String(date.getDate()).padStart(2, '0');
+    return `${year}-${month}-${day}`;
+}
 
-        // UI 요소 (생략)
-        const ui = { app: document.getElementById('app'), datePicker: document.getElementById('date-picker'), selectedDateDisplay: document.getElementById('selected-date-display'), timeSlots: document.getElementById('time-slots'), bookingForm: { container: document.getElementById('booking-form'), date: document.getElementById('form-date'), time: document.getElementById('form-time'), userName: document.getElementById('userName'), submitBtn: document.getElementById('submit-booking'), }, cancelForm: { container: document.getElementById('cancel-form'), info: document.getElementById('cancel-info'), cancelBtn: document.getElementById('cancel-booking'), }, infoMessage: document.getElementById('info-message'), userIdDisplay: document.getElementById('user-id-display'), loadingSpinner: document.getElementById('loading-spinner'), customConfirm: { container: document.getElementById('custom-confirm'), message: document.getElementById('confirm-message'), okBtn: document.getElementById('confirm-ok'), cancelBtn: document.getElementById('confirm-cancel'), }, notification: document.getElementById('notification'), };
-        
-        // 알림/확인창 함수 (생략)
-        function showNotification(message, type = 'success') { ui.notification.textContent = message; ui.notification.className = `notification ${type}`; ui.notification.classList.add('show'); setTimeout(() => { ui.notification.classList.remove('show'); }, 3000); }
-        function showConfirm(message) { return new Promise(resolve => { ui.customConfirm.message.textContent = message; ui.customConfirm.container.classList.remove('hidden'); ui.customConfirm.container.classList.add('flex'); ui.customConfirm.okBtn.onclick = () => { ui.customConfirm.container.classList.add('hidden'); ui.customConfirm.container.classList.remove('flex'); resolve(true); }; ui.customConfirm.cancelBtn.onclick = () => { ui.customConfirm.container.classList.add('hidden'); ui.customConfirm.container.classList.remove('flex'); resolve(false); }; }); }
+        const state = {
+            userId: null,
+            selectedDate: null,
+            selectedTime: null,
+            reservations: new Map(),
+            isBooking: false,
+            unsubscribe: null, 
+        };
 
-        // 날짜 렌더링
-        function renderDates() { ui.datePicker.innerHTML = ''; const today = new Date(); for (let i = 0; i < config.visibleDays; i++) { const date = new Date(today); date.setDate(today.getDate() + i); const dateString = date.toISOString().split('T')[0]; const button = document.createElement('button'); button.dataset.date = dateString; button.className = 'p-3 rounded-lg text-center transition duration-200 focus:outline-none focus:ring-2 focus:ring-cyan-400'; button.innerHTML = `<p class="font-bold text-lg">${date.getDate()}</p><p class="text-xs">${['일', '월', '화', '수', '목', '금', '토'][date.getDay()]}</p>`; if (state.selectedDate === dateString) { button.classList.add('bg-cyan-500', 'text-white', 'shadow-lg'); } else { button.classList.add('bg-gray-700', 'hover:bg-gray-600'); } button.addEventListener('click', () => handleDateSelect(dateString)); ui.datePicker.appendChild(button); } }
-        
-        // 시간 슬롯 렌더링
-        function renderTimeSlots() { ui.timeSlots.innerHTML = ''; if (!state.selectedDate) { ui.selectedDateDisplay.textContent = '날짜를 선택해주세요.'; return; } const [year, month, day] = state.selectedDate.split('-'); ui.selectedDateDisplay.textContent = `${year}년 ${month}월 ${day}일 예약 현황`; for (const hour of config.availableHours) { const displayTime = hour === 12 ? '12:00(점심)' : `${hour.toString().padStart(2, '0')}:00`; const timeString = `${hour.toString().padStart(2, '0')}:00`; const slotId = `${state.selectedDate}_${timeString}`; const reservation = state.reservations.get(slotId); const slot = document.createElement('button'); slot.dataset.time = timeString; slot.className = 'p-4 rounded-lg text-center transition duration-200 font-semibold focus:outline-none focus:ring-2 focus:ring-cyan-400'; if (reservation) { slot.innerHTML = `${displayTime}<br><span class="text-sm font-normal truncate">${reservation.userName}</span>`; if (reservation.userId === state.userId) { slot.classList.add('bg-red-600', 'text-white', 'cursor-pointer', 'hover:bg-red-500'); slot.title = "클릭하여 예약 취소"; } else { slot.classList.add('bg-gray-600', 'text-gray-400', 'cursor-not-allowed'); slot.disabled = true; } } else { slot.textContent = displayTime; if (state.selectedTime === timeString) { slot.classList.add('bg-cyan-500', 'text-white', 'shadow-md'); } else { slot.classList.add('bg-gray-700', 'hover:bg-gray-600'); } } slot.addEventListener('click', () => handleTimeSelect(timeString)); ui.timeSlots.appendChild(slot); } }
+        // UI 요소 (생략)
+        const ui = { app: document.getElementById('app'), datePicker: document.getElementById('date-picker'), selectedDateDisplay: document.getElementById('selected-date-display'), timeSlots: document.getElementById('time-slots'), bookingForm: { container: document.getElementById('booking-form'), date: document.getElementById('form-date'), time: document.getElementById('form-time'), userName: document.getElementById('userName'), submitBtn: document.getElementById('submit-booking'), }, cancelForm: { container: document.getElementById('cancel-form'), info: document.getElementById('cancel-info'), cancelBtn: document.getElementById('cancel-booking'), }, infoMessage: document.getElementById('info-message'), userIdDisplay: document.getElementById('user-id-display'), loadingSpinner: document.getElementById('loading-spinner'), customConfirm: { container: document.getElementById('custom-confirm'), message: document.getElementById('confirm-message'), okBtn: document.getElementById('confirm-ok'), cancelBtn: document.getElementById('confirm-cancel'), }, notification: document.getElementById('notification'), };
+        
+        // 알림/확인창 함수 (생략)
+        function showNotification(message, type = 'success') { ui.notification.textContent = message; ui.notification.className = `notification ${type}`; ui.notification.classList.add('show'); setTimeout(() => { ui.notification.classList.remove('show'); }, 3000); }
+        function showConfirm(message) { return new Promise(resolve => { ui.customConfirm.message.textContent = message; ui.customConfirm.container.classList.remove('hidden'); ui.customConfirm.container.classList.add('flex'); ui.customConfirm.okBtn.onclick = () => { ui.customConfirm.container.classList.add('hidden'); ui.customConfirm.container.classList.remove('flex'); resolve(true); }; ui.customConfirm.cancelBtn.onclick = () => { ui.customConfirm.container.classList.add('hidden'); ui.customConfirm.container.classList.remove('flex'); resolve(false); }; }); }
 
-        // 예약 패널 업데이트
-        function updateBookingPanel() { ui.bookingForm.container.classList.add('hidden'); ui.cancelForm.container.classList.add('hidden'); ui.infoMessage.classList.add('hidden'); if (!state.selectedTime) { ui.infoMessage.textContent = '예약할 시간대를 선택해주세요.'; ui.infoMessage.classList.remove('hidden'); return; } const slotId = `${state.selectedDate}_${state.selectedTime}`; const reservation = state.reservations.get(slotId); if (reservation) { if (reservation.userId === state.userId) { const displayTime = state.selectedTime === '12:00' ? '12:00(점심)' : state.selectedTime; ui.cancelForm.info.textContent = `${reservation.userName}님의 예약 (${displayTime})`; ui.cancelForm.container.classList.remove('hidden'); } else { ui.infoMessage.textContent = `${reservation.userName}님이 예약한 시간대입니다.`; ui.infoMessage.classList.remove('hidden'); } } else { const displayTime = state.selectedTime === '12:00' ? '12:00(점심)' : state.selectedTime; ui.bookingForm.date.textContent = state.selectedDate; ui.bookingForm.time.textContent = displayTime; ui.bookingForm.userName.value = ''; ui.bookingForm.container.classList.remove('hidden'); } }
+        // 날짜 렌더링
+      function renderDates() { 
+    ui.datePicker.innerHTML = ''; 
+    const today = new Date(); 
+    today.setHours(0, 0, 0, 0); // 시간을 자정으로 고정하여 날짜 계산 오류 방지
 
-        // [수정] 날짜 선택 시 해당 날짜의 예약만 실시간으로 가져옴
-        function handleDateSelect(dateString) {
-            state.selectedDate = dateString;
-            state.selectedTime = null;
-            if (state.unsubscribe) { state.unsubscribe(); }
-            state.reservations.clear();
-            ui.loadingSpinner.classList.remove('hidden');
-            state.unsubscribe = reservationsCol.where('date', '==', dateString)
-                .onSnapshot(snapshot => {
-                    snapshot.docChanges().forEach(change => {
-                        const data = change.doc.data();
-                        const slotId = `${data.date}_${data.time}`;
-                        if (change.type === 'added' || change.type === 'modified') { state.reservations.set(slotId, data); }
-                        if (change.type === 'removed') { state.reservations.delete(slotId); }
-                    });
-                    renderDates(); renderTimeSlots(); updateBookingPanel();
-                    ui.loadingSpinner.classList.add('hidden');
-                }, error => {
-                    console.error("예약 데이터 수신 실패:", error);
-                    showNotification("데이터 로딩에 실패했습니다.", "error");
-                    ui.loadingSpinner.classList.add('hidden');
-                });
-        }
-        
-        function handleTimeSelect(timeString) { state.selectedTime = timeString; renderTimeSlots(); updateBookingPanel(); }
+    for (let i = 0; i < config.visibleDays; i++) { 
+        const date = new Date(today); 
+        date.setDate(today.getDate() + i); 
+        
+        // [핵심 수정] 이 부분이 날짜를 정확하게 잡아줍니다.
+        const dateString = getLocalDateString(date); 
+        
+        const button = document.createElement('button'); 
+        button.dataset.date = dateString; 
+        button.className = 'p-3 rounded-lg text-center transition duration-200 focus:outline-none focus:ring-2 focus:ring-cyan-400'; 
+        button.innerHTML = `<p class="font-bold text-lg">${date.getDate()}</p><p class="text-xs">${['일', '월', '화', '수', '목', '금', '토'][date.getDay()]}</p>`; 
+        
+        if (state.selectedDate === dateString) { 
+            button.classList.add('bg-cyan-500', 'text-white', 'shadow-lg'); 
+        } else { 
+            button.classList.add('bg-gray-700', 'hover:bg-gray-600'); 
+        } 
+        button.addEventListener('click', () => handleDateSelect(dateString)); 
+        ui.datePicker.appendChild(button); 
+    } 
+}
 
-        // [수정] 예약 제출 시 Firebase에 데이터 저장
-        async function handleBookingSubmit() {
-            const userName = ui.bookingForm.userName.value.trim();
-            if (!userName) { showNotification('예약자 이름을 입력해주세요.', 'error'); return; }
-            if (!state.selectedDate || !state.selectedTime || state.isBooking) return;
-            state.isBooking = true;
-            ui.bookingForm.submitBtn.disabled = true;
-            ui.bookingForm.submitBtn.textContent = '예약 중...';
-            const slotId = `${state.selectedDate}_${state.selectedTime}`;
-            const reservationData = { date: state.selectedDate, time: state.selectedTime, userName: userName, userId: state.userId, createdAt: firebase.firestore.FieldValue.serverTimestamp(), };
-            try {
-                await reservationsCol.doc(slotId).set(reservationData);
-                state.selectedTime = null; updateBookingPanel();
-                showNotification(`${userName}님의 예약이 완료되었습니다.`, 'success');
-            } catch (error) {
-                console.error("예약 실패:", error);
-                showNotification("예약에 실패했습니다. 다른 사람이 방금 예약했을 수 있습니다.", 'error');
-            } finally {
-                state.isBooking = false; ui.bookingForm.submitBtn.disabled = false; ui.bookingForm.submitBtn.textContent = '예약하기';
-            }
-        }
+        // 시간 슬롯 렌더링
+        function renderTimeSlots() { ui.timeSlots.innerHTML = ''; if (!state.selectedDate) { ui.selectedDateDisplay.textContent = '날짜를 선택해주세요.'; return; } const [year, month, day] = state.selectedDate.split('-'); ui.selectedDateDisplay.textContent = `${year}년 ${month}월 ${day}일 예약 현황`; for (const hour of config.availableHours) { const displayTime = hour === 12 ? '12:00(점심)' : `${hour.toString().padStart(2, '0')}:00`; const timeString = `${hour.toString().padStart(2, '0')}:00`; const slotId = `${state.selectedDate}_${timeString}`; const reservation = state.reservations.get(slotId); const slot = document.createElement('button'); slot.dataset.time = timeString; slot.className = 'p-4 rounded-lg text-center transition duration-200 font-semibold focus:outline-none focus:ring-2 focus:ring-cyan-400'; if (reservation) { slot.innerHTML = `${displayTime}<br><span class="text-sm font-normal truncate">${reservation.userName}</span>`; if (reservation.userId === state.userId) { slot.classList.add('bg-red-600', 'text-white', 'cursor-pointer', 'hover:bg-red-500'); slot.title = "클릭하여 예약 취소"; } else { slot.classList.add('bg-gray-600', 'text-gray-400', 'cursor-not-allowed'); slot.disabled = true; } } else { slot.textContent = displayTime; if (state.selectedTime === timeString) { slot.classList.add('bg-cyan-500', 'text-white', 'shadow-md'); } else { slot.classList.add('bg-gray-700', 'hover:bg-gray-600'); } } slot.addEventListener('click', () => handleTimeSelect(timeString)); ui.timeSlots.appendChild(slot); } }
 
-        // [수정] 예약 취소 시 Firebase에서 데이터 삭제
-        async function handleBookingCancel() {
-            if (!state.selectedDate || !state.selectedTime || state.isBooking) return;
-            const confirmed = await showConfirm('정말로 예약을 취소하시겠습니까?');
-            if (!confirmed) return;
-            state.isBooking = true;
-            ui.cancelForm.cancelBtn.disabled = true;
-            ui.cancelForm.cancelBtn.textContent = '취소 중...';
-            const slotId = `${state.selectedDate}_${state.selectedTime}`;
-            try {
-                await reservationsCol.doc(slotId).delete();
-                state.selectedTime = null; updateBookingPanel();
-                showNotification('예약이 취소되었습니다.', 'success');
-            } catch (error) {
-                console.error("예약 취소 실패:", error);
-                showNotification("예약 취소에 실패했습니다.", 'error');
-            } finally {
-                state.isBooking = false; ui.cancelForm.cancelBtn.disabled = false; ui.cancelForm.cancelBtn.textContent = '예약 취소';
-            }
-        }
+        // 예약 패널 업데이트
+        function updateBookingPanel() { ui.bookingForm.container.classList.add('hidden'); ui.cancelForm.container.classList.add('hidden'); ui.infoMessage.classList.add('hidden'); if (!state.selectedTime) { ui.infoMessage.textContent = '예약할 시간대를 선택해주세요.'; ui.infoMessage.classList.remove('hidden'); return; } const slotId = `${state.selectedDate}_${state.selectedTime}`; const reservation = state.reservations.get(slotId); if (reservation) { if (reservation.userId === state.userId) { const displayTime = state.selectedTime === '12:00' ? '12:00(점심)' : state.selectedTime; ui.cancelForm.info.textContent = `${reservation.userName}님의 예약 (${displayTime})`; ui.cancelForm.container.classList.remove('hidden'); } else { ui.infoMessage.textContent = `${reservation.userName}님이 예약한 시간대입니다.`; ui.infoMessage.classList.remove('hidden'); } } else { const displayTime = state.selectedTime === '12:00' ? '12:00(점심)' : state.selectedTime; ui.bookingForm.date.textContent = state.selectedDate; ui.bookingForm.time.textContent = displayTime; ui.bookingForm.userName.value = ''; ui.bookingForm.container.classList.remove('hidden'); } }
 
-        // [수정] 앱 초기화
-        function initApp() {
-            state.userId = localStorage.getItem('ants-booker-userId');
-            if (!state.userId) {
-                state.userId = 'user_' + Math.random().toString(36).substr(2, 9);
-                localStorage.setItem('ants-booker-userId', state.userId);
-            }
-            ui.userIdDisplay.textContent = state.userId;
-            const today = new Date().toISOString().split('T')[0];
-            handleDateSelect(today);
-            ui.bookingForm.submitBtn.addEventListener('click', handleBookingSubmit);
-            ui.cancelForm.cancelBtn.addEventListener('click', handleBookingCancel);
-        }
-        
-        document.addEventListener('DOMContentLoaded', initApp);
-        document.addEventListener('keypress', (e) => { if (e.key === 'Enter' && ui.bookingForm.userName === document.activeElement) { handleBookingSubmit(); } });
-    </script>
+        // [수정] 날짜 선택 시 해당 날짜의 예약만 실시간으로 가져옴
+        function handleDateSelect(dateString) {
+            state.selectedDate = dateString;
+            state.selectedTime = null;
+            if (state.unsubscribe) { state.unsubscribe(); }
+            state.reservations.clear();
+            ui.loadingSpinner.classList.remove('hidden');
+            state.unsubscribe = reservationsCol.where('date', '==', dateString)
+                .onSnapshot(snapshot => {
+                    snapshot.docChanges().forEach(change => {
+                        const data = change.doc.data();
+                        const slotId = `${data.date}_${data.time}`;
+                        if (change.type === 'added' || change.type === 'modified') { state.reservations.set(slotId, data); }
+                        if (change.type === 'removed') { state.reservations.delete(slotId); }
+                    });
+                    renderDates(); renderTimeSlots(); updateBookingPanel();
+                    ui.loadingSpinner.classList.add('hidden');
+                }, error => {
+                    console.error("예약 데이터 수신 실패:", error);
+                    showNotification("데이터 로딩에 실패했습니다.", "error");
+                    ui.loadingSpinner.classList.add('hidden');
+                });
+        }
+        
+        function handleTimeSelect(timeString) { state.selectedTime = timeString; renderTimeSlots(); updateBookingPanel(); }
+
+        // [수정] 예약 제출 시 Firebase에 데이터 저장
+        async function handleBookingSubmit() {
+            const userName = ui.bookingForm.userName.value.trim();
+            if (!userName) { showNotification('예약자 이름을 입력해주세요.', 'error'); return; }
+            if (!state.selectedDate || !state.selectedTime || state.isBooking) return;
+            state.isBooking = true;
+            ui.bookingForm.submitBtn.disabled = true;
+            ui.bookingForm.submitBtn.textContent = '예약 중...';
+            const slotId = `${state.selectedDate}_${state.selectedTime}`;
+            const reservationData = { date: state.selectedDate, time: state.selectedTime, userName: userName, userId: state.userId, createdAt: firebase.firestore.FieldValue.serverTimestamp(), };
+            try {
+                await reservationsCol.doc(slotId).set(reservationData);
+                state.selectedTime = null; updateBookingPanel();
+                showNotification(`${userName}님의 예약이 완료되었습니다.`, 'success');
+            } catch (error) {
+                console.error("예약 실패:", error);
+                showNotification("예약에 실패했습니다. 다른 사람이 방금 예약했을 수 있습니다.", 'error');
+            } finally {
+                state.isBooking = false; ui.bookingForm.submitBtn.disabled = false; ui.bookingForm.submitBtn.textContent = '예약하기';
+            }
+        }
+
+        // [수정] 예약 취소 시 Firebase에서 데이터 삭제
+        async function handleBookingCancel() {
+            if (!state.selectedDate || !state.selectedTime || state.isBooking) return;
+            const confirmed = await showConfirm('정말로 예약을 취소하시겠습니까?');
+            if (!confirmed) return;
+            state.isBooking = true;
+            ui.cancelForm.cancelBtn.disabled = true;
+            ui.cancelForm.cancelBtn.textContent = '취소 중...';
+            const slotId = `${state.selectedDate}_${state.selectedTime}`;
+            try {
+                await reservationsCol.doc(slotId).delete();
+                state.selectedTime = null; updateBookingPanel();
+                showNotification('예약이 취소되었습니다.', 'success');
+            } catch (error) {
+                console.error("예약 취소 실패:", error);
+                showNotification("예약 취소에 실패했습니다.", 'error');
+            } finally {
+                state.isBooking = false; ui.cancelForm.cancelBtn.disabled = false; ui.cancelForm.cancelBtn.textContent = '예약 취소';
+            }
+        }
+
+        // [수정] 앱 초기화
+function initApp() {
+    state.userId = localStorage.getItem('ants-booker-userId');
+    if (!state.userId) {
+        state.userId = 'user_' + Math.random().toString(36).substr(2, 9);
+        localStorage.setItem('ants-booker-userId', state.userId);
+    }
+    ui.userIdDisplay.textContent = state.userId;
+    
+    // [핵심 수정] 오늘 날짜를 가져오는 방식 변경
+    const today = getLocalDateString(new Date()); 
+    handleDateSelect(today);
+    
+    ui.bookingForm.submitBtn.addEventListener('click', handleBookingSubmit);
+    ui.cancelForm.cancelBtn.addEventListener('click', handleBookingCancel);
+}
+        
+        document.addEventListener('DOMContentLoaded', initApp);
+        document.addEventListener('keypress', (e) => { if (e.key === 'Enter' && ui.bookingForm.userName === document.activeElement) { handleBookingSubmit(); } });
+    </script>
 </body>
 </html>
+
+지금 괜찮나?
